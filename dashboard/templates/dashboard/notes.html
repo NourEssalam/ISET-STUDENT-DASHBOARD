@@ -1,0 +1,36 @@
+{% extends 'dashboard/base.html' %}
+<!-- Load the static files here -->
+{% load static %} {% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container">
+<div class="row">
+    {% for note in notes %}
+    <div class="col-md-3">
+      <a href="{% url 'notes-detail' note.id %}">
+          <div class="card">
+          <div class="card-header">{{note.title}}</div>
+          <div class="card-body">{{note.description|slice:"0:100"}}</div>
+          <div class="card-footer mt-auto">
+            <a href="{% url 'delete-note' note.id %}"> <i class="fa fa-trash fa-2x"></i></a> 
+          </div>
+          </div>
+      </a>
+      </div>
+    {% endfor %}
+    <br /><br />
+</div><br>
+</div>
+<br /><br />
+<div class="container">
+<form method="POST" action="{% url 'notes' %}" novalidate>
+    {% csrf_token %}
+    <fieldset class="form-group">
+    <legend class="border-bottom mb-4">Create Notes</legend>
+    </fieldset>
+    {{form|crispy}}
+    <input type="submit" value="Create">
+</form>
+</div>
+
+{% endblock content %}
